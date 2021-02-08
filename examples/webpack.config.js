@@ -8,7 +8,7 @@ module.exports = {
     const fullDir = path.resolve(__dirname, dir)
     const entry = path.resolve(fullDir, 'app.ts');
     if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
-      memo[dir] = ['webpack-hot-middleware/client?noInfo=true&quiet=true&reload=true', entry]
+      memo[dir] = ['webpack-hot-middleware/client', entry]
     }
     return memo
   }, {}),

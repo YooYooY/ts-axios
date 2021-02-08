@@ -4,7 +4,7 @@ import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType, timeout } = config
+    const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken } = config
 
     const request: XMLHttpRequest = new XMLHttpRequest()
 
@@ -22,6 +22,13 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
     request.onerror = function handleError() {
       reject(createError('Network Error', config, null, request))
+    }
+
+    if (cancelToken) {
+      cancelToken.promise.then(reason => {
+        request.abort()
+        reject(reason)
+      })
     }
 
     request.onreadystatechange = function handleLoad() {

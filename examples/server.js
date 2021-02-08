@@ -4,7 +4,6 @@ const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
-const { collapseTextChangeRangesAcrossMultipleVersions } = require('typescript')
 
 const app = express()
 const compiler = webpack(WebpackConfig)
@@ -38,6 +37,8 @@ registerExtendRouter()
 registerInterceptorRouter()
 
 registerConfigRouter()
+
+registerCancelRouter()
 
 app.use(router)
 
@@ -151,5 +152,19 @@ function registerInterceptorRouter () {
 function registerConfigRouter () {
   router.post('/config/post', function(req, res) {
     res.json(req.body)
+  })
+}
+
+function registerCancelRouter () {
+  router.get('/cancel/get', function(req, res) {
+    setTimeout(() => {
+      res.json('hello')
+    }, 1000)
+  })
+
+  router.post('/cancel/post', function(req, res) {
+    setTimeout(() => {
+      res.json(req.body)
+    }, 1000)
   })
 }
