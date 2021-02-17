@@ -5,6 +5,8 @@ import { AxiosRequestConfig } from './types'
 const defaults: AxiosRequestConfig = {
   method: 'get',
   timeout: 0,
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
   transformRequest: [
     function(data: any, headers: any): any {
       headers = processHeaders(headers, data)
@@ -20,6 +22,9 @@ const defaults: AxiosRequestConfig = {
     common: {
       Accept: 'application/json,text/plain,*/*'
     }
+  },
+  validateStatus(status: number): boolean {
+    return status >= 200 && status < 300
   }
 }
 

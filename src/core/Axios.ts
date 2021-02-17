@@ -7,7 +7,7 @@ import {
   ResolvedFn
 } from '../types'
 import InterceptorManager from './AxiosInterceptorManager'
-import dispatchRequest from './dispatchRequest'
+import dispatchRequest, { transformURL } from './dispatchRequest'
 import mergeConfig from './mergeConfig'
 
 interface Interceptors {
@@ -94,5 +94,9 @@ export default class Axios {
         data
       })
     )
+  }
+  getUri(config?: AxiosRequestConfig): string {
+    config = mergeConfig(this.defaults, config)
+    return transformURL(config)
   }
 }
